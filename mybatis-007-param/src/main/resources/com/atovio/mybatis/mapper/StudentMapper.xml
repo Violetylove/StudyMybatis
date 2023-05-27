@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.atovio.mybatis.mapper.StudentMapper">
+
+    <!-- 追加的查询内容-->
+    <!--
+        1. 定义一个结果映射，在这个映射中指定数据库表中字段与Java对象属性的对应关系。
+        2. type属性：用来指定POJO类的类名。可以写别名。
+        3. id属性：指定resultMap的唯一标识。这个id将来要在select标签中使用。
+    -->
+    <resultMap id="studentResultMap" type="student">
+        <!-- 如果有主键，就配一个id标签-->
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <result property="height" column="height"/>
+        <result property="birth" column="birth"/>
+        <result property="sex" column="sex"/>
+    </resultMap>
+    <select id="selectTotal" resultType="long">
+        select count(*)
+        from t_student
+    </select>
+    <!-- resultMap属性，用来指定结果映射，即指定结果映射的id-->
+    <select id="selectAllByResultMap" resultMap="studentResultMap">
+        select *
+        from t_student
+    </select>
+    <select id="selectAllRetMap" resultType="map">
+        select *
+        from t_student
+    </select>
+
+
+    <!-- 参数研究 -->
+    <!--<insert id="insertStudentByMap" parameterType="map">-->
+    <insert id="insertStudentByMap">
+        insert into t_student (id, name, age, height, birth, sex) values(null, #{name}, #{age}, #{height}, #{birth},
+        #{sex})
+    </insert>
+    <select id="selectById" resultType="Student">
+        select *
+        from t_student
+        where id = #{id}
+    </select>
+    <select id="selectByName" resultType="Student">
+        select *
+        from t_student
+        where name = #{name}
+    </select>
+    <select id="selectByBirth" resultType="Student">
+        select *
+        from t_student
+        where birth = #{birth}
+    </select>
+    <select id="selectBySex" resultType="Student">
+        select *
+        from t_student
+        where sex = #{sex}
+    </select>
+    <select id="selectByNameAndSex" resultType="Student">
+        <!--select * from t_student where name = #{arg0} and sex = #{arg1}-->
+        select * from t_student where name = #{param1} and sex = #{param2}
+    </select>
+    <select id="selectByNameAndSex2" resultType="Student">
+        select *
+        from t_student
+        where name = #{name}
+          and sex = #{sex}
+    </select>
+</mapper>

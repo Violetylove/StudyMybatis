@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="jdbc.properties"/>
+    <!--起别名-->
+    <typeAliases>
+        <!--
+            type:指定给哪个类型起别名。
+            alias:指定的别名。可以省略，有默认别名，就是类的简单名。
+            别名不区分大小写。
+        -->
+        <!--<typeAlias type="com.atovio.mybatis.pojo.Car" alias="aaa"/>-->
+        <!--默认为car/Car/CAr/cAr...-->
+        <!--<typeAlias type="com.atovio.mybatis.pojo.Car"/>-->
+
+        <!--还有更省事的，指定包名就可以了。自动为包下的所有类起别名，默认为简单名-->
+        <package name="com.atovio.mybatis.pojo"/>
+    </typeAliases>
+    <environments default="mybatis">
+        <environment id="mybatis">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <!--
+        <mapper class="com.atovio.mybatis.mapper.CarMapper"/>
+        <mapper resource="CarMapper.xml"/>
+        -->
+        <!--一般多使用这种方式-->
+        <!--前提是xml文件和接口放在该包下，并且二者文件名一致-->
+        <package name="com.atovio.mybatis.mapper"/>
+    </mappers>
+
+</configuration>

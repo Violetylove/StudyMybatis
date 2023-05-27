@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--要想使用动态代理，命名空间要写全限定接口名-->
+<!--id必须是Dao接口中的方法名-->
+<mapper namespace="com.atovio.bank.dao.AccountDao">
+
+    <select id="selectByActnu" resultType="com.atovio.bank.pojo.Account">
+        select *
+        from t_act
+        where actnu = #{actnu};
+    </select>
+
+    <update id="updateByActnu">
+        update t_act set balance = #{balance} where actnu = #{actnu}
+    </update>
+
+</mapper>

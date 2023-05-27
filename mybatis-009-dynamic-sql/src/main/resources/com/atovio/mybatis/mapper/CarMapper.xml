@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.atovio.mybatis.mapper.CarMapper">
+    <!--
+        foreach标签
+        collection:指定数组或集合
+        item:数组或集合中的元素，随便起名
+        separator:循环之间的分隔符
+    -->
+    <insert id="insertBatch">
+        insert into t_car values
+        <foreach collection="cars" item="car" separator=",">
+            (null,#{car.carNum},#{car.brand},#{car.guidePrice},#{car.produceTime},#{car.carType})
+        </foreach>
+    </insert>
+    <!-- <delete id="deleteByIds">
+        delete from t_car
+        <where>
+            id in(
+            <foreach collection="ids" item="id" separator=",">
+                #{id}
+            </foreach>
+            )
+        </where>
+    </delete>-->
+    <delete id="deleteByIds">
+        delete from t_car
+        <where>
+            id in
+            <foreach collection="ids" item="id" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+        </where>
+    </delete>
+    <update id="updateBySet">
+        update t_car
+        <set>
+            <if test="carNum != null and carNum != ''">
+                car_num = #{carNum},
+            </if>
+            <if test="brand != null and brand != ''">
+                brand = #{brand},
+            </if>
+            <if test="guidePrice != null and guidePrice != ''">
+                guide_price = #{guidePrice},
+            </if>
+            <if test="produceTime != null and produceTime != ''">
+                produce_time = #{produceTime},
+            </if>
+            <if test="carType != null and carType != ''">
+                car_type = #{carType},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    <update id="updateById">
+        update t_car set
+        car_num = #{carNum},
+        brand = #{brand},
+        guide_price = #{guidePrice},
+        produce_time = #{produceTime},
+        car_type = #{carType}
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    <select id="selectByMultiCondition" resultType="Car">
+        select * from t_car where 5 = 5
+        <!--
+           1. if标签中test属性为真，就会把标签内容拼接到sql语句中。
+           2. test可以出现:
+            参数使用@Param注解，指定的参数名。
+            参数未使用@Param注解时，param1,param2 ... 或者 arg0,arg1 ...
+            参数为POJO类时，pojo类的属性名。
+           3. 动态sql语句中，不能使用 && 只能使用 and
+           4. 在最初的sql语句中where条件添加 永真条件 保证语句正常执行。
+        -->
+        <if test=" brand != null and brand != '' ">
+            <!--and brand like concat('%',#{brand},'%')-->
+            <!--and brand like '%${brand}%'-->
+            and brand like "%"#{brand}"%"
+        </if>
+        <if test=" guidePrice != null and guidePrice != ''">
+            and guide_price > #{guidePrice}
+        </if>
+        <if test=" carType != null and carType != ''">
+            and car_type = #{carType}
+        </if>
+        <!--若都为空，则拼接永假判断语句-->
+        <if test=" brand == '' and guidePrice == null and carType == ''">
+            1 = 0
+        </if>
+    </select>
+    <select id="selectByMultiConditionWithWhere" resultType="Car">
+        select * from t_car
+        <!--where标签动态生成where子句-->
+        <where>
+            <if test=" brand != null and brand != '' ">
+                and brand like "%"#{brand}"%"
+            </if>
+            <if test=" guidePrice != null and guidePrice != ''">
+                and guide_price > #{guidePrice}
+            </if>
+            <if test=" carType != null and carType != ''">
+                and car_type = #{carType}
+            </if>
+            <!--若都为空，则拼接永假判断语句-->
+            <if test=" brand == '' and guidePrice == null and carType == ''">
+                1 = 0
+            </if>
+        </where>
+    </select>
+    <select id="selectByMultiConditionWithTrim" resultType="Car">
+        select * from t_car
+        <!--
+            prefix：前缀
+            suffix:后缀
+            prefixOverrides:去掉前缀
+            suffixOverrides:去掉后缀
+        -->
+        <!--prefix="where"：在trim标签所有内容加上前缀where-->
+        <!--suffixOverrides="and | or"：去掉后缀and或or-->
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test=" brand != null and brand != '' ">
+                brand like "%"#{brand}"%" and
+            </if>
+            <if test=" guidePrice != null and guidePrice != ''">
+                guide_price > #{guidePrice} and
+            </if>
+            <if test=" carType != null and carType != ''">
+                car_type = #{carType} and
+            </if>
+            <!--若都为空，则拼接永假判断语句-->
+            <if test=" brand == '' and guidePrice == null and carType == ''">
+                1 = 0
+            </if>
+        </trim>
+    </select>
+    <select id="selectByChoose" resultType="Car">
+        select * from t_car
+        <where>
+            <!--choose标签内的分支只能执行一个！！ -->
+            <choose>
+                <when test="brand != null and brand !=''">
+                    brand like "%"#{brand}"%"
+                </when>
+                <when test="guidePrice != null and guidePrice != ''">
+                    guide_price > #{guidePrice}
+                </when>
+                <otherwise>
+                    car_type = #{carType}
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+</mapper>

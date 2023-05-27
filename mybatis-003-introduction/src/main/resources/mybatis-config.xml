@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--java.util.Properties类，是一个Map集合。key和value都是String类型。-->
+    <!--在properties可以配置很多属性-->
+    <!--
+    <properties>
+         <property name="jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+         <property name="jdbc.url" value="jdbc:mysql://localhost:3306/mybatis"/>
+         <property name="jdbc.username" value="root"/>
+         <property name="jdbc.password" value="12345"/>
+     </properties>
+     -->
+
+    <!--resource,从类路径下开始查找资源-->
+    <properties resource="jdbc.properties"/>
+
+    <!--default表示默认使用的环境-->
+    <environments default="mybatis02">
+
+        <!--其中的一个环境，连接的数据库是mybatis-->
+        <!--一般一个环境environment会对应一个SqlSessionFactory对象-->
+        <environment id="mybatis">
+            <transactionManager type="JDBC"/>
+            <!--
+                dataSource配置：
+                    1. dataSource被称为数据源，只要是提供Connection对象的都可以叫数据源。是JDK规范：javax.sql.DataSource。
+                    2. 我们可以编写自己的数据源组件，只要实现了javax.sql.DataSource接口。
+                    比如可以自己写一个属于自己的数据库连接池。
+
+                    3. type属性指定数据源的类型，就是指定具体的方式来获取Connection对象，有3个值可选：
+                        type="[UNPOOLED|POOLED|JNDI]"
+                        UNPOOLED:不使用数据库连接池技术。
+                        POOLED:使用mybatis自己的数据库连接池。
+                        JNDI:集成第三方的数据库连接池
+            -->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/mybatis"/>
+                <property name="username" value="root"/>
+                <property name="password" value="12345"/>
+
+                <!--使用连接池的话，配好参数会事半功倍，具体情况具体分析-->
+                <!--poolMaximumActiveConnections属性，指定连接池最大可活动连接对象的数量，默认为10-->
+                <property name="poolMaximumActiveConnections" value="5"/>
+                <!--最大空闲数量-->
+                <property name="poolMaximumIdleConnections" value="3"/>
+            </dataSource>
+        </environment>
+
+        <!--这是另一个环境，连接的是另一个数据库-->
+        <environment id="mybatis02">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+
+    </environments>
+
+    <mappers>
+        <mapper resource="CarMapper.xml"/>
+    </mappers>
+
+</configuration>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.atovio.mybatis.mapper.CarMapper">
+
+    <!--
+        默认情况下，二级缓存机制是开启的。
+        使用时，只需要在对应映射器文件中配置<cache/>标签。
+    -->
+    <cache/>
+    <select id="selectById2" resultType="Car">
+        select *
+        from t_car
+        where id = #{id};
+    </select>
+
+    <select id="selectById" resultType="Car">
+        select *
+        from t_car
+        where id = #{id};
+    </select>
+</mapper>

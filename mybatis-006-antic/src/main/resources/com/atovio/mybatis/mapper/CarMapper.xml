@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace没有别名-->
+<mapper namespace="com.atovio.mybatis.mapper.CarMapper">
+    <!--
+        useGeneratedKeys="true" 使用自动生成的主键值
+        keyProperty="id" 指定将主键赋值的属性
+    -->
+    <insert id="insertCarUseGeneratedKeys" useGeneratedKeys="true" keyProperty="id">
+        insert into t_car values(null, #{carNum}, #{brand}, #{guidePrice}, #{produceTime}, #{carType})
+    </insert>
+    <delete id="deleteBatch">
+        <!--delete from t_car where id in(#{ids});-->
+        delete from t_car where id in(${ids});
+    </delete>
+
+    <!--声明一个sql片段-->
+    <sql id="carColumnNameSql">
+        id,
+        car_num as carNum,
+        brand,
+        guide_price as guidePrice,
+        produce_time as produceTime,
+        car_type as carType
+    </sql>
+    <select id="selectByBrandLike" resultType="Car">
+        select
+        <include refid="carColumnNameSql"/>
+        from t_car where
+        brand like
+        <!--concat('%',#{brand},'%')-->
+        "%"#{brand}"%"
+    </select>
+    <select id="selectAllByAscOrDesc" resultType="Car">
+        select
+        <include refid="carColumnNameSql"/>
+        from t_car order by
+        <!--使用${}，因为ascOrDesc应该直接被拼接到sql语句中。若使用#{}则值会变为'ascOrDesc'-->
+        produce_time ${ascOrDesc}
+    </select>
+    <select id="selectByCarType" resultType="Car">
+        select
+        <include refid="carColumnNameSql"/>
+        from
+        t_car
+        where
+        car_type=#{carType}
+    </select>
+</mapper>
