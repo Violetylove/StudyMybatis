@@ -52,7 +52,7 @@
         小技巧：以后凡是遇到resource这个单词，大部分情况下，这种加载资源的方式都是从类的根路径下开始查找。
     * InputStream is = new FileInputStream("");
         采用这种方式也可以。
-        缺点：可移植性太差，成不够健壮，可能会移植到其他操作系统，导致路径无效。
+        缺点：可移植性太差，不够健壮，可能会移植到其他操作系统，导致路径无效。
     * InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream("mybatis-config.xml");
         ClassLoader.getSystemClassLoader() 获取系统的类加载器。
         系统类加载器有一个方法getResourceAsStream，它就是从类路径中加载资源
@@ -114,6 +114,3 @@
         第二部：引入logback必须的配置文件。
             这个配置文件名必须是logback.xml或者logback-test.xml。
             这个文件必须放置在类的根路径下。
-
-
-
