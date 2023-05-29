@@ -9,7 +9,6 @@ import java.io.IOException;
 
 /**
  * Mybatis工具类
- *
  * @version 1.1
  * @Organization AtoVio
  * @Author Winter Yuan
@@ -35,7 +34,6 @@ public class SqlSessionUtil {
 
     /**
      * 获取会话对象
-     *
      * @return SqlSession 会话对象
      */
     public static SqlSession OpenSession() {
@@ -50,7 +48,6 @@ public class SqlSessionUtil {
 
     /**
      * 关闭sqlSession对象
-     *
      * @param sqlSession
      */
     public static void close(SqlSession sqlSession) {

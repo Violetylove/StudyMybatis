@@ -5,7 +5,6 @@ import org.apache.ibatis.javassist.CtClass;
 
 /**
  * 工具类，可以动态生成Dao的实现类/代理类
- *
  * @version 1.0
  * @Organization AtoVio
  * @Author Winter Yuan
@@ -15,7 +14,6 @@ public class GenerateDaoProxy {
 
     /**
      * 生成接口的实现类，并创建对象返回
-     *
      * @param daoInterface 接口名
      * @return 实现了接口的类对象
      */

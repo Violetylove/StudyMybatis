@@ -14,7 +14,7 @@ import java.math.BigDecimal;
  */
 public class CarMapperTest {
 
-    // CarExample类负责封装查询条件的
+    // CarExample类 负责封装查询条件
     @Test
     public void testSelect(){
         SqlSession sqlSession = SqlSessionUtil.getSession();

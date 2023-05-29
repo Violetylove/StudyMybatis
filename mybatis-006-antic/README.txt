@@ -67,10 +67,12 @@ mybatis小技巧
     </typeAliases>
 
 6. mybatis-config.xml中的mappers标签
-    resource和url属性已经知晓。
+    resource和url属性已经知晓。都是根据属性值，到对应路径下找文件。
+
     <mapper class="全限定接口名"/>
     class:提供全限定接口名。使用这个属性后，mybatis会去接口的包下找 接口.xml 文件。
-    所以，要把xml文件放到包下。不过，我们采用另一种方式：在resource目录下新建包目录，用 / 对目录分级，再把xml文件放到目录中。
+    所以，要把xml文件放到包下。
+    在IDEA中，我们可以采取这种方式：在resource目录下新建包目录，用 / 对目录分级，再把xml文件放到目录中。
     例如:
         <mapper class="com.atovio.mybatis.mapper.CarMapper"/>
         在resource目录下创建目录，com/atovio/mybatis/mapper。再把文件放置进去。
